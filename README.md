@@ -72,10 +72,22 @@ This approach would allow the client to be injected from the MFE through the def
 
 This is essentially the same as option 1, but rather than having boilerplate code in the apps, the boilerplate code is moved to a wrapper library. This approach works, but requires us to maintain a wrapper library, which is a significant maintenance burden.
 
-```js
-// MFEContext.js
+```jsx
+// MFEContext.jsx
+import { ApolloProvider } from "@apollo/client/react";
+import { client } from "shared-client";
+
 const MFEContext = React.createContext({ name: '', version: '' });
-export default MFEContext;
+
+export function MFEApolloProvider({ name, version, children }) {
+  return (
+    <ApolloProvider client={client}>
+      <MFEContext.Provider value={{ name, version }}>
+        {children}
+      </MFEContext.Provider>
+    </ApolloProvider>
+  );
+}
 
 // Inject client awareness into the context of a GraphQL operation
 export function useMFEAwareness(context) {
@@ -119,14 +131,12 @@ export function useQuery(query, options) {
 
 ```jsx
 // App.jsx
-import { MFEContext } from "@athena/apollo-mfe-client";
+import { MFEApolloProvider } from "@athena/apollo-mfe-client";
 export default function App() {
   return (
-    <MFEContext.Provider value={{ name: 'mfe-a', version: '1.0.0' }}>
-      <ApolloProvider client={client}>
-        <Data />
-      </ApolloProvider>
-    </MFEContext.Provider>
+    <MFEApolloProvider name="mfe-a" version="1.0.0">
+      <Data />
+    </MFEApolloProvider>
   );
 }
 ```
