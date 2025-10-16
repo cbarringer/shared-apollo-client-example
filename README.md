@@ -4,7 +4,7 @@ When multiple micro-front-ends (MFEs) are loaded on a single page, connecting to
 
 We would *also* like to be able to identify which MFE issued the operation, so that we can segment by MFE in the GraphOS Studio Insights tab.
 
-In this repo we have two MFEs, `mfe-a` and `mfe-b`, that both connect to the same GraphQL endpoint. They both use the same Apollo Client instance, but there is no clear path to distinguish in that client _which_ MFE issued the operation.
+In this repo we have two MFEs, [`mfe-a`](./packages/mfe-a/bundle.jsx) and [`mfe-b`](./packages/mfe-b/bundle.jsx), that both connect to the same GraphQL endpoint. They both use the [same Apollo Client instance](./packages/shared-client/index.mjs), but there is no clear path to distinguish in that client _which_ MFE issued the operation.
 
 The `SetContextLink` can be used to set the client headers for the operation, but it doesn't provide a way to distinguish between MFEs. Similarly, the `ClientAwarenessLink` can be used to set the client headers for the operation, but it doesn't provide a way to distinguish between MFEs.
 
