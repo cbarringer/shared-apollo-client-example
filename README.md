@@ -4,7 +4,7 @@ When multiple micro-front-ends (MFEs) are loaded on a single page, connecting to
 
 We would *also* like to be able to identify which MFE issued the operation, so that we can segment by MFE in the GraphOS Studio Insights tab.
 
-In this repo we have two MFEs, [`mfe-a`](./packages/mfe-a/bundle.jsx) and [`mfe-b`](./packages/mfe-b/bundle.jsx), that both connect to the same GraphQL endpoint. They both use the [same Apollo Client instance](./packages/shared-client/index.mjs), but there is no clear path to distinguish in that client _which_ MFE issued the operation.
+In this repo we have two MFEs, [`mfe-a`](./packages/mfe-a/bundle.jsx) and [`mfe-b`](./packages/mfe-b/bundle.jsx), that both connect to the same GraphQL endpoint. They both use the [same Apollo Client instance](./packages/shared-client/index.mjs), but there is no clear path to distinguish in that client _which_ MFE issued the operation. This example can be run with `pnpm build && pnpm start`, and the network requests can be observed in the browser's developer tools.
 
 The `SetContextLink` can be used to set the client headers for the operation, but it doesn't provide a way to distinguish between MFEs. Similarly, the `ClientAwarenessLink` can be used to set the client headers for the operation, but it doesn't provide a way to distinguish between MFEs.
 
@@ -54,7 +54,7 @@ export function getClient(name, version) {
 });
 ```
 
-This has the advantage of sharing the same cache and links between MFEs and allows for the client awareness to be specific to the invoking MFE. What's not clear is if sharing a link and a cache across different clients is in fact supported by the `@apollo/client` library.
+This has the advantage of sharing the same cache and links between MFEs and allows for the client awareness to be specific to the invoking MFE. Unfortunately, this does not seem to allow us to batch across different MFEs, as we can observe with branch [shared-cache-and-batch](https://github.com/cbarringer/shared-apollo-client-example/tree/shared-cache-and-batch).
 
 # Option 3: Add an optional `defaultContext` prop to the `ApolloProvider` component
 ```jsx
