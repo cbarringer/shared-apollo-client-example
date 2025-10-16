@@ -1,11 +1,18 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { BatchHttpLink } from "@apollo/client/link/batch-http";
+
+const link = new BatchHttpLink({
+  uri: "https://rickandmortyapi.com/graphql",
+  batchMax: 5, // No more than 5 operations per batch
+  batchInterval: 20, // Wait no more than 20ms after first batched operation
+});
 
 const cache = new InMemoryCache();
 
 export const client = new ApolloClient({
   // Provide required constructor fields
   cache: cache,
-  uri: "https://swapi-graphql.netlify.app/.netlify/functions/index",
+  link,
 
   // Provide some optional constructor fields
   name: "shared-client",

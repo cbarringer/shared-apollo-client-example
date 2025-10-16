@@ -1,19 +1,19 @@
 {
-  "name": "shared-apollo-client-example",
+  "name": "mfe-a",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "pnpm -r build",
-    "start": "serve -l 3000 -s static",
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.15.1",
-  "devDependencies": {
-    "serve": "^14.2.5",
-    "vite": "^7.1.10"
+  "dependencies": {
+    "@apollo/client": "^4.0.7",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   }
 }
