@@ -71,3 +71,82 @@ This approach would allow the client to be injected from the MFE through the def
 # Option 4: Create a wrapper library around `@apollo/client` that automatically injects client awareness
 
 This is essentially the same as option 1, but rather than having boilerplate code in the apps, the boilerplate code is moved to a wrapper library. This approach works, but requires us to maintain a wrapper library, which is a significant maintenance burden.
+
+```js
+// MFEContext.js
+const MFEContext = React.createContext({ name: '', version: '' });
+export default MFEContext;
+
+// Inject client awareness into the context of a GraphQL operation
+export function useMFEAwareness(context) {
+  const { name, version } = React.useContext(MFEContext);
+  return addAwareness(context, { name, version });
+}
+
+export function addAwareness(context, { name, version }) {
+  return { ...context, clientAwareness: { name, version } };
+}
+
+export function useMFEObservables(fetchMore, subscribeToMore) {
+  const { name, version } = React.useContext(MFEContext);
+  return {
+    fetchMore(fetchMoreOptions) {
+      const context = addAwareness(fetchMoreOptions.context, { name, version });
+      return fetchMore({ ...fetchMoreOptions, context })
+    },
+    subscribeToMore(subscribeToMoreOptions) {
+      const context = addAwareness(subscribeToMoreOptions.context, { name, version });
+      return subscribeToMore({ ...subscribeToMoreOptions, context })
+    }
+  };
+}
+```
+
+```js
+// use-query.js
+import { useQuery as useApolloQuery } from "@apollo/client";
+import { useMFEAwareness, useMFEObservables } from "./MFEContext";
+
+export function useQuery(query, options) {
+  const context = useMFEAwareness(options.context);
+  const { subscribeToMore, fetchMore, ...result } = useApolloQuery(query, { ...options, context });
+  return {
+    ...result,
+    ...useMFEObservables(fetchMore, subscribeToMore),
+  };
+}
+```
+
+```jsx
+// App.jsx
+import { MFEContext } from "@athena/apollo-mfe-client";
+export default function App() {
+  return (
+    <MFEContext.Provider value={{ name: 'mfe-a', version: '1.0.0' }}>
+      <ApolloProvider client={client}>
+        <Data />
+      </ApolloProvider>
+    </MFEContext.Provider>
+  );
+}
+```
+
+```jsx
+// Data.jsx
+import { useQuery } from "@athena/apollo-mfe-client";
+
+export default function Data() {
+  const { loading, error, data } = useQuery(EXAMPLE_QUERY);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+
+  return (
+    <ul>
+      {data.characters.results.map((character) => (
+        <li key={character.name}>{character.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
