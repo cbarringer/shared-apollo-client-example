@@ -11,7 +11,7 @@ const link = ApolloLink.from([
   }),
   // This also won't work because it's not specific to the MFE
   // new ClientAwarenessLink({
-  //   name: "shared-client",
+  //   name: "mfea-a", // or name: "mfe-b"
   //   version: "1.0.0",
   // }),
   new BatchHttpLink({
