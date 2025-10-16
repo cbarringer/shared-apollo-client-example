@@ -1,0 +1,19 @@
+{
+  "name": "mfe-b",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.1",
+  "dependencies": {
+    "@apollo/client": "^4.0.7",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}

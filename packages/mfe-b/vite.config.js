@@ -13,7 +13,7 @@ export default defineConfig({
       fileName: "bundle",
       formats: ["es"],
     },
-    outDir: resolve(__dirname, "../../static/build/mfe-a"),
+    outDir: resolve(__dirname, "../../static/build/mfe-b"),
     emptyOutDir: true,
     rollupOptions: {
       external: ["shared-client"],
