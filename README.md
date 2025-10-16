@@ -67,3 +67,7 @@ This has the advantage of sharing the same cache and links between MFEs and allo
 ```
 
 This approach would allow the client to be injected from the MFE through the default context, but is potentially a large lift to add this capability to the `@apollo/client` library.
+
+# Option 4: Create a wrapper library around `@apollo/client` that automatically injects client awareness
+
+This is essentially the same as option 1, but rather than having boilerplate code in the apps, the boilerplate code is moved to a wrapper library. This approach works, but requires us to maintain a wrapper library, which is a bit of a maintenance burden.
