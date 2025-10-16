@@ -2,7 +2,9 @@ import React from "react";
 import { ApolloProvider, useQuery } from "@apollo/client/react";
 import { gql } from "@apollo/client";
 import { createRoot } from "react-dom/client";
-import { client } from "shared-client";
+import { getClient } from "shared-client";
+
+const client = getClient("mfe-a", "1.0.0");
 
 const EXAMPLE_QUERY = gql`
 query ExampleQuery {
