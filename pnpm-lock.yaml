@@ -27,6 +27,18 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
 
+  packages/mfe-b:
+    dependencies:
+      '@apollo/client':
+        specifier: ^4.0.7
+        version: 4.0.7(graphql@16.11.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(rxjs@7.8.2)
+      react:
+        specifier: ^19.2.0
+        version: 19.2.0
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.0(react@19.2.0)
+
   packages/shared-client:
     dependencies:
       '@apollo/client':
